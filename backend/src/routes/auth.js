@@ -61,12 +61,13 @@ authRoute.post(
   signUp
 );
 
+
 authRoute.post(
   "/signupp",
   [
     check("name").trim().notEmpty().withMessage("Name is required."),
     check("email")
-      .isEmail()
+      .isEmail() 
       .withMessage("Please provide a valid email address.")
       .custom((value) => {
         return User.findOne({ email: value }).then((user) => {

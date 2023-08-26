@@ -152,12 +152,12 @@ const signUp = async (req, res) => {
 };
 
 const signUpp = async (req, res) => {
-  const errors = validationResult(req) || [];
-  if (!errors.isEmpty()) {
-    return res.status(WRONG_ENTITY).json({
-      errors: errors.array(),
-    });
-  }
+  // const errors = validationResult(req) || [];
+  // if (!errors.isEmpty()) {
+  //   return res.status(WRONG_ENTITY).json({
+  //     errors: errors.array(),
+  //   });
+  // }
   const { name, email, password } = req.body;
   try {
     const lastUser = await User.findOne().sort({ userId: -1 });
@@ -165,9 +165,12 @@ const signUpp = async (req, res) => {
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      return res.status(BAD_REQUEST).json({
-        error: "Email address already registered.",
-      });
+      return res
+        .status(BAD_REQUEST)
+        .json({
+          status: BAD_REQUEST,
+          error: "Email address already registered.",
+        });
     }
 
     const hashedPassword = hashPassword(password, process.env.SALT || "");
@@ -409,7 +412,6 @@ const validateOTP = async (req, res) => {
     });
   }
 };
-
 
 module.exports = {
   signUp,
